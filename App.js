@@ -1,15 +1,16 @@
 import React from 'react'
-import { View, Text, SafeAreaView } from 'react-native'
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import SplashComponent from './src/Screens/splash';
+import WelcomeComponent from './src/Screens/welcome';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <SafeAreaView style={{ flex: 1}}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Welcome to FireChat</Text>
-        </View>
-      </SafeAreaView>
+console.disableYellowBox = true;
 
-    )
-  }
-}
+const appContainer = createAppContainer(
+  createStackNavigator({
+    Splash : { screen : SplashComponent},
+    Welcome : {screen : WelcomeComponent},
+  })
+)
+
+export default appContainer
