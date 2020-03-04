@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Modal, Image, Text } from 'react-native'
+import { View, Modal, Image, Text,StatusBar } from 'react-native'
 
 export default class ProgressDialog extends React.Component {
 

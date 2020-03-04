@@ -55,7 +55,7 @@ export default class WelcomeComponent extends React.Component {
 
     render() {
         if (this.state.showRealApp) {
-            return <GetStartedComponent />;
+            return <GetStartedComponent navigation={this.props.navigation}/>;
         } else {
             return (
                 <View style={{flex:1}}>

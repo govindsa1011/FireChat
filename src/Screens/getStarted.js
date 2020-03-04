@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StatusBar, ScrollView, StyleSheet, TextInput, KeyboardAvoidingView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StatusBar, ScrollView, StyleSheet, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProgressDialog from '../Components/ProgressDialog';
@@ -19,9 +19,13 @@ export default class GetStartedComponent extends React.Component {
     }
 
     btnClickHandler = () => {
+        if (this.state.isLoading) {
+            return;
+        }
+
         if (this.state.strMobile.trim() === '') {
             showMessage({
-                message: "Mobile no. should not empty",
+                message: "Mobile number should not empty.",
                 type: "danger"
             });
         } else {
@@ -33,6 +37,12 @@ export default class GetStartedComponent extends React.Component {
                 this.setState({
                     isLoading: false
                 })
+                showMessage({
+                    message: "Login Successfully",
+                    type: "success"
+                });
+
+                this.props.navigation.navigate('Phone')
             }, 3000)
         }
     }
@@ -45,11 +55,14 @@ export default class GetStartedComponent extends React.Component {
                     barStyle="light-content"
                     translucent={true}
                 />
-                <FlashMessage position="bottom" />
+                <FlashMessage position="top"/>
                 <KeyboardAvoidingView style={{ flex: 1 }}>
                     <ScrollView style={{ flex: 1 }} bounces={true} showsVerticalScrollIndicator={false}>
                         <SafeAreaView style={{ flex: 1, alignItems: 'center' }}>
                             <Text style={styles.getStartedTextStyle}>Get Started</Text>
+                            <Text style={{ fontSize: 16, textAlign: 'center', fontFamily: 'Poppins-Regular', paddingHorizontal: 16, }}>
+                                Let's connect everywhere {'\n'} Have great conversation anytime.
+                            </Text>
                             <Image source={require('../../assets/images/chat.png')} style={{ height: 300, width: '100%' }} resizeMode={'contain'} />
                             <TextInput style={styles.textInputStyle}
                                 placeholder='Mobile no.'
@@ -60,14 +73,16 @@ export default class GetStartedComponent extends React.Component {
                                 onChangeText={this.txtChangeHangler} />
 
                             <TouchableOpacity style={styles.circleShape} onPress={this.btnClickHandler}>
-                                <Icon name='chevron-right' size={20} color='white' style={{ marginStart: 4 }} />
+                                {this.state.isLoading ? <ActivityIndicator size='large' color='white'>
+
+                                </ActivityIndicator> :
+                                    <Icon name='chevron-right' size={20} color='white' style={{ marginStart: 4 }} />}
                             </TouchableOpacity>
 
                             <TouchableOpacity>
                                 <Text style={{ fontSize: 16, marginTop: 10, fontFamily: 'Poppins-Medium' }}>Need Help?</Text>
                             </TouchableOpacity>
                         </SafeAreaView>
-                        <ProgressDialog isVisible={this.state.isLoading} />
                     </ScrollView>
 
                 </KeyboardAvoidingView>
@@ -95,7 +110,7 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         margin: 20,
         paddingStart: 10,
-        paddingBottom:5,
+        paddingBottom: 5,
         elevation: 4,
         backgroundColor: 'white'
     },

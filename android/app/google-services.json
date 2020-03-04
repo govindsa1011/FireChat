@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "699072685684-s7a39oga54kg5ktkgfgtf1et2msrjtpf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.firechat",
+            "certificate_hash": "8ec3558ba48a036ba72ec85bc2cc98cb17e65f85"
+          }
+        },
+        {
           "client_id": "699072685684-5ko41egija9uj7tfgjdv4a02b27i9bi2.apps.googleusercontent.com",
           "client_type": 3
         }
