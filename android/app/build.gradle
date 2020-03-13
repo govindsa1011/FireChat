@@ -179,7 +179,7 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-firebase')
+    implementation project(':@react-native-community_async-storage')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'com.facebook.fresco:animated-gif:2.0.0'   //use

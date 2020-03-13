@@ -1,22 +1,32 @@
-import React from 'react'
+//import liraries
+import React from 'react';
 import { View, Text, StatusBar, ScrollView, StyleSheet, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ActivityIndicator, ToastAndroid } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import * as color from '../utils/colors';
-import ProgressDialog from '../Components/ProgressDialog';
-import { StackActions, NavigationActions } from 'react-navigation';
 import { firebaseAuth } from '../../environment/config';
+import { StackActions, NavigationActions } from 'react-navigation';
+import ProgressDialog from '../Components/ProgressDialog';
 
-export default class GetStartedComponent extends React.Component {
+// create a component
+class SignUpComponent extends React.Component {
     static navigationOptions = {
         header: null
     }
 
     state = {
+        strName: '',
         strEmail: '',
         strPassword: '',
+        strConfirmPassword: '',
         isLoading: false
     }
+
+    txtNameChangeHangler = (value) => {
+        this.setState({
+            strName: value
+        })
+    }
+
 
     txtEmailChangeHangler = (value) => {
         this.setState({
@@ -30,13 +40,23 @@ export default class GetStartedComponent extends React.Component {
         })
     }
 
+    txtCPassWordChangeHangler = (value) => {
+        this.setState({
+            strConfirmPassword: value
+        })
+    }
+
     btnClickHandler = () => {
         if (this.state.isLoading) {
             return;
         }
 
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (this.state.strEmail.trim() === '') {
+
+        if (this.state.strName.trim() === '') {
+            ToastAndroid.show("Please enter name", ToastAndroid.SHORT)
+            return;
+        } else if (this.state.strEmail.trim() === '') {
             ToastAndroid.show("Please enter email id", ToastAndroid.SHORT)
             return;
         } else if (reg.test(this.state.strEmail) === false) {
@@ -48,27 +68,34 @@ export default class GetStartedComponent extends React.Component {
         } else if (this.state.strPassword.length < 6 || this.state.strPassword.length > 15) {
             ToastAndroid.show('Password must be 6 to 15 character', ToastAndroid.SHORT)
             return;
+        } else if (this.state.strConfirmPassword.trim() === '') {
+            ToastAndroid.show('Please enter confirm password', ToastAndroid.SHORT)
+            return;
+        } else if (this.state.strPassword.trim() !== this.state.strConfirmPassword.trim()) {
+            ToastAndroid.show('Password does not match', ToastAndroid.SHORT)
+            return;
         } else {
-            this.doLogin()
+            this.doSignUp();
         }
     }
 
-    doLogin = () => {
+    doSignUp = () => {
         this.setState({
             isLoading: true
         })
 
-        firebaseAuth.signInWithEmailAndPassword(this.state.strEmail, this.state.strPassword).then((result) => {
-            this.setState({
-                isLoading: false
+        firebaseAuth.createUserWithEmailAndPassword(this.state.strEmail, this.state.strPassword)
+            .then((result) => {
+                console.log(result)
+                this.setState({
+                    isLoading: false
+                })
+                const navigateAction = StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: 'Home' })],
+                });
+                this.props.navigation.dispatch(navigateAction);
             })
-            console.log(result)
-            const navigateAction = StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'Home' })],
-            });
-            this.props.navigation.dispatch(navigateAction);
-        })
             .catch(error => {
                 this.setState({
                     isLoading: false
@@ -88,26 +115,41 @@ export default class GetStartedComponent extends React.Component {
                 <KeyboardAvoidingView style={{ flex: 1 }}>
                     <ScrollView style={{ flex: 1 }} bounces={true} showsVerticalScrollIndicator={false}>
                         <SafeAreaView style={{ flex: 1, alignItems: 'center' }}>
-                            <Text style={styles.getStartedTextStyle}>Get Started</Text>
+                            <Text style={styles.getStartedTextStyle}>Connect with us</Text>
                             <Text style={{ fontSize: 16, textAlign: 'center', fontFamily: 'Poppins-Regular', paddingHorizontal: 16, }}>
-                                Let's connect everywhere {'\n'} Have great conversation anytime.
+                                Do Register here {'\n'} Enjoy the conversation with buddies.
                             </Text>
                             <Image source={require('../../assets/images/chat.png')} style={{ height: 200, width: '80%' }} resizeMode={'contain'} />
 
                             <TextInput style={styles.textInputStyle}
+                                placeholder='Name'
+                                keyboardType='default'
+                                autoCorrect={false}
+                                value={this.state.strName}
+                                onChangeText={this.txtNameChangeHangler} />
+
+                            <TextInput style={[styles.textInputStyle, { marginTop: 0 }]}
                                 placeholder='Email'
                                 keyboardType='email-address'
                                 autoCorrect={false}
                                 value={this.state.strEmail}
                                 onChangeText={this.txtEmailChangeHangler} />
 
-                            <TextInput style={[styles.textInputStyle, { marginTop: 5 }]}
+                            <TextInput style={[styles.textInputStyle, { marginTop: 0 }]}
                                 placeholder='Password'
                                 keyboardType='default'
                                 secureTextEntry={true}
                                 autoCorrect={false}
                                 value={this.state.strPassword}
                                 onChangeText={this.txtPasswordChangeHangler} />
+
+                            <TextInput style={[styles.textInputStyle, { marginTop: 0 }]}
+                                placeholder='Re-enter Password'
+                                keyboardType='default'
+                                secureTextEntry={true}
+                                autoCorrect={false}
+                                value={this.state.strConfirmPassword}
+                                onChangeText={this.txtCPassWordChangeHangler} />
 
                             <TouchableOpacity style={styles.circleShape} onPress={this.btnClickHandler}>
                                 {this.state.isLoading ? <ActivityIndicator size='large' color='white'>
@@ -116,12 +158,12 @@ export default class GetStartedComponent extends React.Component {
                                     <Icon name='chevron-right' size={20} color='white' style={{ marginStart: 4 }} />}
                             </TouchableOpacity>
 
-                            <View style={{ marginTop: 10, flexDirection: 'row' }}>
-                                <Text style={{ fontSize: 16, fontFamily: 'Poppins-Medium' }}>Don't have account?</Text>
+                            <View style={{ marginTop: 10, marginBottom: 30, flexDirection: 'row' }}>
+                                <Text style={{ fontSize: 16, fontFamily: 'Poppins-Medium' }}>Already have an account?</Text>
                                 <TouchableOpacity onPress={() => {
-                                    this.props.navigation.navigate('SignUp')
+                                    this.props.navigation.goBack(null)
                                 }}>
-                                    <Text style={{ color: color.red, fontSize: 16, marginStart: 5, fontFamily: 'Poppins-Medium' }}>Sign Up</Text>
+                                    <Text style={{ color: '#d32e36', fontSize: 16, marginStart: 5, fontFamily: 'Poppins-Medium' }}>Log In</Text>
                                 </TouchableOpacity>
                             </View>
                         </SafeAreaView>
@@ -129,14 +171,14 @@ export default class GetStartedComponent extends React.Component {
                     </ScrollView>
                 </KeyboardAvoidingView>
             </View>
-        )
+        );
     }
 }
 
 const styles = StyleSheet.create({
     getStartedTextStyle: {
         fontFamily: 'Poppins-Bold',
-        marginTop: 50,
+        marginTop: 20,
         fontSize: 24,
         alignSelf: 'center'
     },
@@ -173,4 +215,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         borderRadius: 50
     }
-})
+});
+
+//make this component available to the app
+export default SignUpComponent;

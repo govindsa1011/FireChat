@@ -7,7 +7,7 @@ import {
     Text,
     TextInput
 } from 'react-native'
-import firebase from 'react-native-firebase'
+import * as firebase from "firebase";
 
 class PhoneAuth extends Component {
     state = {
@@ -22,6 +22,7 @@ class PhoneAuth extends Component {
     }
 
     handleSendCode = () => {
+        
         // Request to send OTP
         if (this.validatePhoneNumber()) {
             try{

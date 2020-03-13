@@ -7,6 +7,10 @@ export default class SplashComponent extends React.Component {
         header: null
     };
 
+    componentDidMount=() =>{
+     
+    }
+
     componentWillMount() {
         setTimeout(() => {
             const navigateAction = StackActions.reset({

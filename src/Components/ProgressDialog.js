@@ -12,15 +12,15 @@ export default class ProgressDialog extends React.Component {
                     visible={this.props.isVisible}>
                     <View style={{
                         backgroundColor: 'rgba(0,0,0,0.8)', flex: 1,
-                        position: 'absolute',
                         top: 0,
                         bottom: 0,
                         left: 0,
                         right: 0,
                         justifyContent: 'center', alignItems: 'center'
                     }}>
+                        <Image style={{ height: 120, width: 120 }} source={require('../../assets/images/logo.png')} ></Image>
                         <Image style={{ height: 60, width: 60 }} source={require('../../assets/images/loading.gif')} ></Image>
-                        <Text style={{ color: 'white', fontSize: 18, fontFamily: 'Poppins-Bold' }}>Please wait...</Text>
+                        <Text style={{ color: 'white', fontSize: 18, fontFamily: 'Poppins-Bold' }}>Please wait</Text>
                     </View>
                 </Modal>
             </View>
