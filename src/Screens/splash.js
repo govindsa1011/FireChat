@@ -1,26 +1,53 @@
 import React from 'react'
 import { View, Text, StatusBar, ImageBackground, Image } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation';
+import AsyncStorage from '@react-native-community/async-storage';
+import { firebaseAuth } from '../../environment/config'
 
 export default class SplashComponent extends React.Component {
     static navigationOptions = {
-        header: null
+        headerShown: false
     };
 
-    componentDidMount=() =>{
-     
+    componentDidMount() {
+        this.naivgationPath()
     }
 
-    componentWillMount() {
-        setTimeout(() => {
-            const navigateAction = StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: 'Welcome'})],
-            });
-            this.props.navigation.dispatch(navigateAction);
-        }, 5000)
-    }
+    naivgationPath = async () => {
+        try {
+            let route = 'Login'
+            const isTutorialFinish = await AsyncStorage.getItem('@isTutorialFinish')
+            if (isTutorialFinish === null) {
+                route = 'Welcome'
+                const navigateAction = StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: route })],
+                });
 
+                setTimeout(() => {
+                    this.props.navigation.dispatch(navigateAction);
+                }, 3000)
+            } else {
+                firebaseAuth.onAuthStateChanged(user => {
+                    route = user ? 'Home' : 'Login'
+
+                    const navigateAction = StackActions.reset({
+                        index: 0,
+                        actions: [NavigationActions.navigate({ routeName: route })],
+                    });
+
+                    setTimeout(() => {
+                        this.props.navigation.dispatch(navigateAction);
+                    }, 3000)
+                })
+            }
+            0
+
+        } catch (e) {
+            // error reading value
+            console.log(e)
+        }
+    }
     render() {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>

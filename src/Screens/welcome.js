@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, StatusBar } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GetStartedComponent from './getStarted';
+import AsyncStorage from '@react-native-community/async-storage'
 
 const slides = [
     {
@@ -47,9 +48,15 @@ export default class WelcomeComponent extends React.Component {
             </View>
         );
     }
-    _onDone = () => {
+    _onDone = async () => {
         // User finished the introduction. Show real app through
         // navigation or simply by controlling state
+        try {
+            await AsyncStorage.setItem('@isTutorialFinish', "true")
+        } catch (e) {
+            // saving error
+            console.log(e)
+        }
         this.setState({ showRealApp: true });
     }
 

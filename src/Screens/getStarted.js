@@ -6,6 +6,7 @@ import * as color from '../utils/colors';
 import ProgressDialog from '../Components/ProgressDialog';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { firebaseAuth } from '../../environment/config';
+import AsyncStorage from '@react-native-community/async-storage'
 
 export default class GetStartedComponent extends React.Component {
     static navigationOptions = {
@@ -62,7 +63,11 @@ export default class GetStartedComponent extends React.Component {
             this.setState({
                 isLoading: false
             })
+            
             console.log(result)
+            
+            this.sotreUserDetail(result);
+
             const navigateAction = StackActions.reset({
                 index: 0,
                 actions: [NavigationActions.navigate({ routeName: 'Home' })],
@@ -75,6 +80,15 @@ export default class GetStartedComponent extends React.Component {
                 })
                 ToastAndroid.show(error.message, ToastAndroid.SHORT)
             });
+    }
+
+    sotreUserDetail = async (result) => {
+        try {
+            await AsyncStorage.setItem('@user_detail', result)
+        } catch (e) {
+            // saving error
+            console.log(e)
+        }
     }
 
     render() {
