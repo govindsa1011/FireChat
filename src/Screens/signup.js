@@ -1,6 +1,6 @@
 //import liraries
 import React from 'react';
-import { View, Text, StatusBar, ScrollView, StyleSheet, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ActivityIndicator, ToastAndroid } from 'react-native'
+import { View, Text, StatusBar, ScrollView, StyleSheet, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ActivityIndicator, ToastAndroid, AsyncStorage } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { firebaseAuth } from '../../environment/config';
@@ -87,11 +87,14 @@ class SignUpComponent extends React.Component {
         firebaseAuth.createUserWithEmailAndPassword(this.state.strEmail, this.state.strPassword)
             .then((result) => {
                 console.log(result)
+                this.storeUserDetails(result)
+                
                 this.setState({
                     isLoading: false
                 })
                 const navigateAction = StackActions.reset({
                     index: 0,
+                    key:null,
                     actions: [NavigationActions.navigate({ routeName: 'Home' })],
                 });
                 this.props.navigation.dispatch(navigateAction);
@@ -102,6 +105,15 @@ class SignUpComponent extends React.Component {
                 })
                 ToastAndroid.show(error.message, ToastAndroid.SHORT)
             });
+    }
+
+    storeUserDetails = async (result) => {
+        try {
+            await AsyncStorage.setItem('@userDetails', JSON.stringify(result))
+        } catch (e) {
+            // saving error
+            console.log(e)
+        }
     }
 
     render() {

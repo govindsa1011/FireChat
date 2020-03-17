@@ -17,32 +17,22 @@ export default class SplashComponent extends React.Component {
         try {
             let route = 'Login'
             const isTutorialFinish = await AsyncStorage.getItem('@isTutorialFinish')
+            const userDetail = await AsyncStorage.getItem('@userDetails')
             if (isTutorialFinish === null) {
                 route = 'Welcome'
-                const navigateAction = StackActions.reset({
-                    index: 0,
-                    actions: [NavigationActions.navigate({ routeName: route })],
-                });
-
-                setTimeout(() => {
-                    this.props.navigation.dispatch(navigateAction);
-                }, 3000)
             } else {
-                firebaseAuth.onAuthStateChanged(user => {
-                    route = user ? 'Home' : 'Login'
-
-                    const navigateAction = StackActions.reset({
-                        index: 0,
-                        actions: [NavigationActions.navigate({ routeName: route })],
-                    });
-
-                    setTimeout(() => {
-                        this.props.navigation.dispatch(navigateAction);
-                    }, 3000)
-                })
+                route = userDetail!==null ? 'Home' : 'Login'
             }
-            0
 
+            const navigateAction = StackActions.reset({
+                index: 0,
+                key: null,
+                actions: [NavigationActions.navigate({ routeName: route })],
+            });
+
+            setTimeout(() => {
+                this.props.navigation.dispatch(navigateAction);
+            }, 3000)
         } catch (e) {
             // error reading value
             console.log(e)

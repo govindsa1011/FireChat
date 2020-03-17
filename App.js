@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { PlusButton } from './src/Components/PlusButton';
 import * as colors from './src/utils/colors';
+import ChatScreenComponent from './src/Screens/chatscreen';
 
 console.disableYellowBox = true;
 const DEVICE_WIDTH = Dimensions.get('window').width;
@@ -68,8 +69,8 @@ const bottomTabNavigator = createBottomTabNavigator({
   // Our plus button
   Plus: {
     screen: () => null, // Empty screen
-    navigationOptions: () => ({
-      tabBarIcon: <PlusButton /> // Plus button component
+    navigationOptions: ({navigation}) => ({
+      tabBarIcon: <PlusButton navigate={navigation}/> // Plus button component
     })
   },
   Map: {
@@ -98,7 +99,7 @@ const bottomTabNavigator = createBottomTabNavigator({
       elevation: 10,
       width: DEVICE_WIDTH,
       height: 60,
-      zIndex: 8
+      zIndex: 1
     }
   },
   defaultNavigationOptions: ({ navigation }) => ({
@@ -121,6 +122,20 @@ const appContainer = createAppContainer(
       screen: bottomTabNavigator,
       navigationOptions: {
         headerShown: false
+      }
+    },
+    ChatScreen : {
+      screen: ChatScreenComponent,
+      navigationOptions: {
+        headerTitleAlign: 'left',
+        headerStyle: {
+          borderBottomLeftRadius: 30,
+          borderBottomRightRadius: 30
+        },
+        headerTitleStyle: {
+          fontFamily: 'Poppins-Medium',
+          fontSize: 18
+        }
       }
     }
   }),

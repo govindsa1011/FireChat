@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
-import { Animated, View, TouchableOpacity, Image, TouchableHighlight } from "react-native";
+import { Animated, View, Image, TouchableHighlight, AsyncStorage, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as color from '../utils/colors';
+import { firebaseAuth } from '../../environment/config';
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { StackActions, NavigationActions } from 'react-navigation';
+import ProgressDialog from './ProgressDialog';
 
 const SIZE = 80;
 class PlusButton extends Component {
+
+    state = {
+        isLoading: false
+    }
+
     mode = new Animated.Value(0);
     toggleView = () => {
         Animated.timing(this.mode, {
@@ -12,6 +21,52 @@ class PlusButton extends Component {
             duration: 300
         }).start();
     };
+
+    btnLogOutClick = () => {
+        Alert.alert(
+            '',
+            'Are you sure want to logout?',
+            [
+                {
+                    text: 'No',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Yes', onPress: () => {
+                        this.setState({
+                            isLoading: true
+                        })
+                        firebaseAuth.signOut()
+                            .then(() => {
+                                AsyncStorage.removeItem('@userDetails');
+                                const navigateAction = StackActions.reset({
+                                    index: 0,
+                                    key: null,
+                                    actions: [NavigationActions.navigate({ routeName: 'Login' })],
+                                });
+                                setTimeout(() => {
+                                    this.setState({
+                                        isLoading: false
+                                    })
+                                    this.props.navigate.dispatch(navigateAction);
+                                }, 1500);
+                            })
+                            .catch(error => {
+                                setTimeout(() => {
+                                    this.setState({
+                                        isLoading: false
+                                    })
+                                }, 1500);
+
+                                console.log(error.message)
+                            });
+                    }
+                },
+            ],
+            { cancelable: false },
+        );
+    }
+
     render() {
         const firstX = this.mode.interpolate({
             inputRange: [0, 1],
@@ -59,7 +114,7 @@ class PlusButton extends Component {
                 }}>
                     <TouchableOpacity
                         onPress={() => {
-                            console.log("Rocket")
+
                         }}
                         style={{
                             alignItems: 'center',
@@ -70,7 +125,7 @@ class PlusButton extends Component {
                             backgroundColor: color.red
                         }}
                     >
-                        <Icon name="camera" size={16} color="#F8F8F8" />
+                        <Icon name="address-book" size={16} color="#F8F8F8" />
                     </TouchableOpacity>
                 </Animated.View>
                 <Animated.View style={{
@@ -84,7 +139,6 @@ class PlusButton extends Component {
 
                         }}
                         style={{
-                            position: 'absolute',
                             alignItems: 'center',
                             justifyContent: 'center',
                             width: SIZE / 2,
@@ -93,7 +147,7 @@ class PlusButton extends Component {
                             backgroundColor: color.red
                         }}
                     >
-                        <Icon name="video-camera" size={16} color="#F8F8F8" />
+                        <Icon name="user" size={16} color="#F8F8F8" />
                     </TouchableOpacity>
                 </Animated.View>
                 <Animated.View style={{
@@ -102,12 +156,10 @@ class PlusButton extends Component {
                     top: thirdY,
                     opacity
                 }}>
-                    <TouchableOpacity
-                        onPress={() => {
 
-                        }}
+                    <TouchableOpacity
+                        onPress={() => this.btnLogOutClick()}
                         style={{
-                            position: 'absolute',
                             alignItems: 'center',
                             justifyContent: 'center',
                             width: SIZE / 2,
@@ -116,7 +168,7 @@ class PlusButton extends Component {
                             backgroundColor: color.red
                         }}
                     >
-                        <Icon name="file-text" size={16} color="#F8F8F8" />
+                        <Icon name="sign-out" size={16} color="#F8F8F8" />
                     </TouchableOpacity>
                 </Animated.View>
                 <TouchableHighlight
@@ -146,6 +198,8 @@ class PlusButton extends Component {
                         <Image source={require('../../assets/images/logo.png')} style={{ height: SIZE - 30, width: SIZE - 30 }} />
                     </Animated.View>
                 </TouchableHighlight>
+
+                <ProgressDialog isVisible={this.state.isLoading} />
             </View>
         );
     }

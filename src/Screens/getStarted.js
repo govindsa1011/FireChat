@@ -54,7 +54,7 @@ export default class GetStartedComponent extends React.Component {
         }
     }
 
-    doLogin = () => {
+    doLogin = async () => {
         this.setState({
             isLoading: true
         })
@@ -65,11 +65,10 @@ export default class GetStartedComponent extends React.Component {
             })
             
             console.log(result)
-            
-            this.sotreUserDetail(result);
-
+            this.storeUserDetails(result);
             const navigateAction = StackActions.reset({
                 index: 0,
+                key:null,
                 actions: [NavigationActions.navigate({ routeName: 'Home' })],
             });
             this.props.navigation.dispatch(navigateAction);
@@ -82,9 +81,9 @@ export default class GetStartedComponent extends React.Component {
             });
     }
 
-    sotreUserDetail = async (result) => {
+    storeUserDetails = async (result) => {
         try {
-            await AsyncStorage.setItem('@user_detail', result)
+            await AsyncStorage.setItem('@userDetails', JSON.stringify(result))
         } catch (e) {
             // saving error
             console.log(e)

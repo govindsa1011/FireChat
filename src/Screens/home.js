@@ -23,6 +23,7 @@ class HomeComponent extends Component {
             .then(() => {
                 const navigateAction = StackActions.reset({
                     index: 0,
+                    key:null,
                     actions: [NavigationActions.navigate({ routeName: 'Login' })],
                 });
                 this.props.navigation.dispatch(navigateAction);

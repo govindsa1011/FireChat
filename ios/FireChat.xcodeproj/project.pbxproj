@@ -36,6 +36,10 @@
 		12B4E7FF8E4C4AB3B9C2D442 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4ED2D2051D04E35A7A62BDA /* Octicons.ttf */; };
 		D7228BDF18D64BEDBCF242BE /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 524FD26D1C0D45F38E2D2661 /* SimpleLineIcons.ttf */; };
 		097DACA995084390B0715DC8 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F72AE6C1B1F43BA939EA09B /* Zocial.ttf */; };
+		462F3B4C06C9402A9FFFC461 /* EmojiView.app in Resources */ = {isa = PBXBuildFile; fileRef = A40BF8E4E94C46529D648B38 /* EmojiView.app */; };
+		7E9D26DCA23C4D719EF2FC54 /* EmojiViewTests.xctest in Resources */ = {isa = PBXBuildFile; fileRef = C852FE05E0934CC899EC844A /* EmojiViewTests.xctest */; };
+		7F2379D6242145D3A1E5282F /* EmojiView-tvOS.app in Resources */ = {isa = PBXBuildFile; fileRef = CB42A94796114C6586FC9CC5 /* EmojiView-tvOS.app */; };
+		3F586EBC3DEE4E37BBB07638 /* EmojiView-tvOSTests.xctest in Resources */ = {isa = PBXBuildFile; fileRef = 374A4A02722C46D2B757F62F /* EmojiView-tvOSTests.xctest */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +95,11 @@
 		D4ED2D2051D04E35A7A62BDA /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		524FD26D1C0D45F38E2D2661 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		9F72AE6C1B1F43BA939EA09B /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		431FFF5FBAEE4D5687124E9D /* EmojiView.xcodeproj */ = {isa = PBXFileReference; name = "EmojiView.xcodeproj"; path = "../node_modules/react-native-emoji-view/ios/EmojiView.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		A40BF8E4E94C46529D648B38 /* EmojiView.app */ = {isa = PBXFileReference; name = "EmojiView.app"; path = "EmojiView.app"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.application; explicitFileType = undefined; includeInIndex = 0; };
+		C852FE05E0934CC899EC844A /* EmojiViewTests.xctest */ = {isa = PBXFileReference; name = "EmojiViewTests.xctest"; path = "EmojiViewTests.xctest"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.cfbundle; explicitFileType = undefined; includeInIndex = 0; };
+		CB42A94796114C6586FC9CC5 /* EmojiView-tvOS.app */ = {isa = PBXFileReference; name = "EmojiView-tvOS.app"; path = "EmojiView-tvOS.app"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.application; explicitFileType = undefined; includeInIndex = 0; };
+		374A4A02722C46D2B757F62F /* EmojiView-tvOSTests.xctest */ = {isa = PBXFileReference; name = "EmojiView-tvOSTests.xctest"; path = "EmojiView-tvOSTests.xctest"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.cfbundle; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +114,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				462F3B4C06C9402A9FFFC461 /* EmojiView.app in Resources */,
+				7E9D26DCA23C4D719EF2FC54 /* EmojiViewTests.xctest in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +123,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F2379D6242145D3A1E5282F /* EmojiView-tvOS.app in Resources */,
+				3F586EBC3DEE4E37BBB07638 /* EmojiView-tvOSTests.xctest in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,6 +181,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				431FFF5FBAEE4D5687124E9D /* EmojiView.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -553,6 +567,17 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FireChat.app/FireChat";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-emoji-view/ios/EmojiView",
+				);
 			};
 			name = Debug;
 		};
@@ -572,6 +597,17 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FireChat.app/FireChat";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-emoji-view/ios/EmojiView",
+				);
 			};
 			name = Release;
 		};
@@ -591,6 +627,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = FireChat;
 				VERSIONING_SYSTEM = "apple-generic";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-emoji-view/ios/EmojiView",
+				);
 			};
 			name = Debug;
 		};
@@ -609,6 +649,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = FireChat;
 				VERSIONING_SYSTEM = "apple-generic";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-emoji-view/ios/EmojiView",
+				);
 			};
 			name = Release;
 		};
@@ -636,6 +680,17 @@
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-emoji-view/ios/EmojiView",
+				);
 			};
 			name = Debug;
 		};
@@ -663,6 +718,17 @@
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-emoji-view/ios/EmojiView",
+				);
 			};
 			name = Release;
 		};
@@ -689,6 +755,17 @@
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FireChat-tvOS.app/FireChat-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-emoji-view/ios/EmojiView",
+				);
 			};
 			name = Debug;
 		};
@@ -715,6 +792,17 @@
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FireChat-tvOS.app/FireChat-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-emoji-view/ios/EmojiView",
+				);
 			};
 			name = Release;
 		};
