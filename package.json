@@ -13,6 +13,7 @@
     "@react-native-community/async-storage": "^1.8.1",
     "@react-native-community/masked-view": "^0.1.7",
     "@react-navigation/bottom-tabs": "^5.1.1",
+    "base-64": "^0.1.0",
     "firebase": "^7.10.0",
     "react": "16.9.0",
     "react-native": "^0.61.5",
@@ -30,7 +31,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.8.6",
-    "@babel/runtime": "7.8.4",
+    "@babel/runtime": "^7.8.7",
     "@react-native-community/eslint-config": "0.0.5",
     "babel-jest": "24.9.0",
     "eslint": "6.8.0",

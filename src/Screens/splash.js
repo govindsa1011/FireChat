@@ -2,7 +2,6 @@ import React from 'react'
 import { View, Text, StatusBar, ImageBackground, Image } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
-import { firebaseAuth } from '../../environment/config'
 
 export default class SplashComponent extends React.Component {
     static navigationOptions = {

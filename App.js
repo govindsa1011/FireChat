@@ -13,6 +13,11 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { PlusButton } from './src/Components/PlusButton';
 import * as colors from './src/utils/colors';
 import ChatScreenComponent from './src/Screens/chatscreen';
+import {decode, encode} from 'base-64';
+
+if (!global.btoa) {  global.btoa = encode }
+
+if (!global.atob) { global.atob = decode } 
 
 console.disableYellowBox = true;
 const DEVICE_WIDTH = Dimensions.get('window').width;

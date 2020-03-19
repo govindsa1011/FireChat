@@ -4,6 +4,8 @@ import { View, Text, StyleSheet, FlatList, RefreshControl, ScrollView, Image } f
 import ChatItem from '../Components/chatItem';
 import * as colors from '../utils/colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import firebase from '../../environment/config';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // create a component
 class ChatListComponent extends Component {
@@ -59,7 +61,42 @@ class ChatListComponent extends Component {
     }
 
     onItemPress = (chatItem) => {
-        this.props.navigation.navigate('ChatScreen')
+        this.props.navigation.navigate('ChatScreen', { data: chatItem })
+    }
+
+    componentDidMount() {
+        var docId = '';
+        this.getUserDetails().then((userData)=> {
+            docId = userData.userDocId;
+            console.log("Logged In Doc Id: "+JSON.stringify(userData))
+        }).catch(err => {
+            console.log("getUserDetails error : "+ err)
+        });
+        this.ref = firebase.firestore().collection('users');
+        this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+
+        const recentChats = [];
+        
+
+    }
+
+    getUserDetails = async () => {
+        var userDetails = await AsyncStorage.getItem('@userDetails');
+        return JSON.parse(userDetails)
+    }
+
+    onCollectionUpdate = (querySnapshot) => {
+        const boards = [];
+        querySnapshot.forEach((doc) => {
+            const { name , email } = doc.data();
+            boards.push({
+                key: doc.id,
+                doc, // DocumentSnapshot
+                name,
+                email,
+            });
+        });
+        // console.log(boards)
     }
 
     render() {
@@ -72,8 +109,8 @@ class ChatListComponent extends Component {
                                 <RefreshControl refreshing={this.state.isLoading} onRefresh={this.onRefresh} />
                             }
                             initialNumToRender={this.state.chatList.length}
-                            style={{ width: '100%', paddingTop: 16 }} showsVerticalScrollIndicator={false} data={this.state.chatList} renderItem={({ info, index }) => (
-                                <ChatItem item={info} itemIndex={index} onItemPress={this.onItemPress.bind(this)}/>
+                            style={{ width: '100%', paddingTop: 16 }} showsVerticalScrollIndicator={false} data={this.state.chatList} renderItem={(info) => (
+                                <ChatItem item={info.item} itemIndex={info.index} onItemPress={this.onItemPress.bind(this)} />
                             )}
                             keyExtractor={(item) => item.id} />
                         :
@@ -104,15 +141,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     btnStyle: {
-        backgroundColor: colors.red, 
-        borderRadius: 8, 
-        paddingTop: 8, 
-        paddingBottom: 5, 
-        includeFontPadding:false,
-        paddingStart: 16, 
+        backgroundColor: colors.red,
+        borderRadius: 8,
+        paddingTop: 8,
+        paddingBottom: 5,
+        includeFontPadding: false,
+        paddingStart: 16,
         paddingEnd: 16,
-        elevation:10,
-        marginTop:10
+        elevation: 10,
+        marginTop: 10
     }
 });
 

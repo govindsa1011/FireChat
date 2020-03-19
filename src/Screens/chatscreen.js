@@ -17,17 +17,21 @@ class ChatScreenComponent extends Component {
                     <Icon name='chevron-left' size={20} color='black' style={{ marginStart: 16 }} />
                 </TouchableOpacity>
                 <Image source={require('../../assets/images/logo.png')} style={{ height: 40, width: 40, marginStart: 16 }} />
-                <Text style={{ marginStart: 16, fontFamily: 'Poppins-Medium', fontSize: 16 }}>Title</Text>
+                <Text style={{ marginStart: 16, fontFamily: 'Poppins-Medium', fontSize: 16 }}>{navigation.state.params.data.name}</Text>
             </View>
         ),
     })
+
+    componentDidMount() {
+        console.log(this.props.navigation.state.params.data.name)
+    }
 
     render() {
         return (
             <View style={styles.container}>
                 <KeyboardAvoidingView style={{ flex: 1 }}>
                     <View>
-                        
+
                     </View>
                 </KeyboardAvoidingView>
                 <View style={styles.bottomChatBoxStyle}>
@@ -66,8 +70,8 @@ const styles = StyleSheet.create({
             height: 2,
         },
         paddingStart: 6,
-        paddingTop:3,
-        paddingBottom:3,
+        paddingTop: 3,
+        paddingBottom: 3,
         paddingEnd: 6,
         flexDirection: 'row',
         shadowOpacity: 0.29,

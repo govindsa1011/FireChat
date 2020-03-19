@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { firebaseAuth } from '../../environment/config';
 import { StackActions, NavigationActions } from 'react-navigation';
 import ProgressDialog from '../Components/ProgressDialog';
+import firebase from '../../environment/config';
 
 // create a component
 class SignUpComponent extends React.Component {
@@ -13,12 +14,16 @@ class SignUpComponent extends React.Component {
         header: null
     }
 
-    state = {
-        strName: '',
-        strEmail: '',
-        strPassword: '',
-        strConfirmPassword: '',
-        isLoading: false
+    constructor() {
+        super();
+        this.ref = firebase.firestore().collection('users');
+        this.state = {
+            strName: '',
+            strEmail: '',
+            strPassword: '',
+            strConfirmPassword: '',
+            isLoading: false
+        }
     }
 
     txtNameChangeHangler = (value) => {
@@ -84,27 +89,57 @@ class SignUpComponent extends React.Component {
             isLoading: true
         })
 
-        firebaseAuth.createUserWithEmailAndPassword(this.state.strEmail, this.state.strPassword)
-            .then((result) => {
-                console.log(result)
-                this.storeUserDetails(result)
-                
-                this.setState({
-                    isLoading: false
+        try {
+            firebaseAuth.createUserWithEmailAndPassword(this.state.strEmail, this.state.strPassword)
+                .then((result) => {
+                    console.log('User id : ' + result.user.uid);
+                    this.ref.add({
+                        id: result.user.uid,
+                        name: this.state.strName,
+                        email: this.state.strEmail,
+                        password: this.state.strPassword
+                    })
+                    .then((docRef) => {
+                        
+                        const userData = {
+                            userId: result.user.uid,
+                            userDocId:docRef.id,
+                            name: this.state.strName,
+                            email: this.state.strEmail,
+                            password: this.state.strPassword
+                        }
+
+                        this.storeUserDetails(userData)
+
+                        this.setState({
+                            isLoading: false
+                        })
+                        const navigateAction = StackActions.reset({
+                            index: 0,
+                            key: null,
+                            actions: [NavigationActions.navigate({ routeName: 'Home' })],
+                        });
+                        this.props.navigation.dispatch(navigateAction);
+
+                    }).catch(error => {
+                        this.setState({
+                            isLoading: false
+                        })
+                        alert(error.message)
+                    });
                 })
-                const navigateAction = StackActions.reset({
-                    index: 0,
-                    key:null,
-                    actions: [NavigationActions.navigate({ routeName: 'Home' })],
+                .catch(error => {
+                    alert(error)
+                    this.setState({
+                        isLoading: false
+                    })
+                    console.log(error.message)
+                    ToastAndroid.show(error.message, ToastAndroid.SHORT)
                 });
-                this.props.navigation.dispatch(navigateAction);
-            })
-            .catch(error => {
-                this.setState({
-                    isLoading: false
-                })
-                ToastAndroid.show(error.message, ToastAndroid.SHORT)
-            });
+        }
+        catch (e) {
+            alert(e)
+        }
     }
 
     storeUserDetails = async (result) => {
