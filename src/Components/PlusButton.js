@@ -114,7 +114,8 @@ class PlusButton extends Component {
                 }}>
                     <TouchableOpacity
                         onPress={() => {
-
+                            this.toggleView()
+                            this.props.navigate.navigate('People')
                         }}
                         style={{
                             alignItems: 'center',
@@ -125,7 +126,7 @@ class PlusButton extends Component {
                             backgroundColor: color.red
                         }}
                     >
-                        <Icon name="address-book" size={16} color="#F8F8F8" />
+                        <Icon name="users" size={16} color="#F8F8F8" />
                     </TouchableOpacity>
                 </Animated.View>
                 <Animated.View style={{
@@ -158,7 +159,10 @@ class PlusButton extends Component {
                 }}>
 
                     <TouchableOpacity
-                        onPress={() => this.btnLogOutClick()}
+                        onPress={() => {
+                            this.toggleView()
+                            this.btnLogOutClick()
+                        }}
                         style={{
                             alignItems: 'center',
                             justifyContent: 'center',

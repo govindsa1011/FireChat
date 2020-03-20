@@ -97,7 +97,8 @@ class SignUpComponent extends React.Component {
                         id: result.user.uid,
                         name: this.state.strName,
                         email: this.state.strEmail,
-                        password: this.state.strPassword
+                        password: this.state.strPassword,
+                        recent_chats:[]
                     })
                     .then((docRef) => {
                         

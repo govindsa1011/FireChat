@@ -12,52 +12,14 @@ class ChatListComponent extends Component {
 
     state = {
         isLoading: false,
-        chatList: [
-            {
-                id: 1,
-                name: 'Test'
-            },
-            {
-                id: 2,
-                name: 'Demo'
-            },
-            {
-                id: 3,
-                name: 'Chat'
-            },
-            {
-                id: 4,
-                name: 'App'
-            },
-            {
-                id: 5,
-                name: 'Time Pass'
-            },
-            {
-                id: 6,
-                name: 'Test'
-            },
-            {
-                id: 7,
-                name: 'Demo'
-            },
-            {
-                id: 8,
-                name: 'Chat'
-            },
-            {
-                id: 9,
-                name: 'App'
-            },
-            {
-                id: 10,
-                name: 'Time Pass'
-            }
-        ]
+        chatList: []
     }
 
     onRefresh = () => {
-
+        this.setState({
+            isLoading: true
+        })
+        this.fetchRecentChats();
     }
 
     onItemPress = (chatItem) => {
@@ -65,19 +27,34 @@ class ChatListComponent extends Component {
     }
 
     componentDidMount() {
-        var docId = '';
-        this.getUserDetails().then((userData)=> {
-            docId = userData.userDocId;
-            console.log("Logged In Doc Id: "+JSON.stringify(userData))
-        }).catch(err => {
-            console.log("getUserDetails error : "+ err)
-        });
         this.ref = firebase.firestore().collection('users');
         this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+        this.onRefresh();
+    }
 
-        const recentChats = [];
-        
-
+    fetchRecentChats = () => {
+        this.getUserDetails().then((userData) => {
+            var userId = userData.userId;
+            this.ref.where('id', '==', userId).get().then((doc) => {
+                doc.forEach((docRef) => {
+                    this.setState({
+                        isLoading: false
+                    })
+                    console.log("Doc Data ==>> " + JSON.stringify(docRef.data()))
+                    const { recent_chats } = docRef.data();
+                    this.setState({
+                        chatList: recent_chats
+                    })
+                });
+            }).catch(e => {
+                this.setState({
+                    isLoading: false
+                })
+                console.log(e)
+            })
+        }).catch(err => {
+            console.log("getUserDetails error : " + err)
+        });
     }
 
     getUserDetails = async () => {
@@ -86,17 +63,7 @@ class ChatListComponent extends Component {
     }
 
     onCollectionUpdate = (querySnapshot) => {
-        const boards = [];
-        querySnapshot.forEach((doc) => {
-            const { name , email } = doc.data();
-            boards.push({
-                key: doc.id,
-                doc, // DocumentSnapshot
-                name,
-                email,
-            });
-        });
-        // console.log(boards)
+        this.fetchRecentChats()
     }
 
     render() {
@@ -113,19 +80,23 @@ class ChatListComponent extends Component {
                                 <ChatItem item={info.item} itemIndex={info.index} onItemPress={this.onItemPress.bind(this)} />
                             )}
                             keyExtractor={(item) => item.id} />
-                        :
-                        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}
+                        : <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}
                             contentContainerStyle={{ flexGrow: 1 }}
                             refreshControl={
                                 <RefreshControl refreshing={this.state.isLoading} onRefresh={this.onRefresh} />
                             }>
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                <Image source={require('../../assets/images/empty_chat.png')} style={{ height: 170, width: 170, tintColor: colors.red }} />
-                                <Text style={{ fontFamily: 'Poppins-Medium' }}>You currently have no conversations</Text>
-                                <TouchableOpacity style={styles.btnStyle}>
-                                    <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 14, color: 'white' }}>Start Chat</Text>
-                                </TouchableOpacity>
-                            </View>
+                            {((this.state.isLoading === true) && (this.state.chatList.length === 0)) ?
+                                <View></View> :
+                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Image source={require('../../assets/images/empty_chat.png')} style={{ height: 170, width: 170, tintColor: colors.red }} />
+                                    <Text style={{ fontFamily: 'Poppins-Medium' }}>You currently have no conversations</Text>
+                                    <TouchableOpacity style={styles.btnStyle} onPress={()=> {
+                                        this.props.navigation.navigate('People')
+                                    }}>
+                                        <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 14, color: 'white' }}>Start Chat</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            }
                         </ScrollView>
                 }
             </View>

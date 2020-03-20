@@ -7,16 +7,21 @@ import ProgressDialog from '../Components/ProgressDialog';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { firebaseAuth } from '../../environment/config';
 import AsyncStorage from '@react-native-community/async-storage'
+import firebase from '../../environment/config';
 
 export default class GetStartedComponent extends React.Component {
     static navigationOptions = {
         header: null
     }
 
-    state = {
-        strEmail: '',
-        strPassword: '',
-        isLoading: false
+    constructor(){
+        super()
+        this.ref = firebase.firestore().collection('users');
+        this.state = {
+            strEmail: '',
+            strPassword: '',
+            isLoading: false
+        }
     }
 
     txtEmailChangeHangler = (value) => {
@@ -60,18 +65,35 @@ export default class GetStartedComponent extends React.Component {
         })
 
         firebaseAuth.signInWithEmailAndPassword(this.state.strEmail, this.state.strPassword).then((result) => {
-            this.setState({
-                isLoading: false
+            this.ref.where('id','==',result.user.uid).get().then((doc)=> {
+                var docId=''
+                doc.forEach((docRef) => {
+                    docId = docRef.id
+                });
+
+                const userData = {
+                    userId: result.user.uid,
+                    userDocId:docId,
+                    name: this.state.strName,
+                    email: this.state.strEmail,
+                    password: this.state.strPassword
+                }
+    
+                this.storeUserDetails(userData)
+    
+                this.setState({
+                    isLoading: false
+                })
+                const navigateAction = StackActions.reset({
+                    index: 0,
+                    key: null,
+                    actions: [NavigationActions.navigate({ routeName: 'Home' })],
+                });
+                this.props.navigation.dispatch(navigateAction);
+
+            }).catch(e => {
+                console.log(e)
             })
-            
-            console.log(result)
-            this.storeUserDetails(result);
-            const navigateAction = StackActions.reset({
-                index: 0,
-                key:null,
-                actions: [NavigationActions.navigate({ routeName: 'Home' })],
-            });
-            this.props.navigation.dispatch(navigateAction);
         })
             .catch(error => {
                 this.setState({

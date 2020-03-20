@@ -14,6 +14,7 @@ import { PlusButton } from './src/Components/PlusButton';
 import * as colors from './src/utils/colors';
 import ChatScreenComponent from './src/Screens/chatscreen';
 import {decode, encode} from 'base-64';
+import PeopleComponent from './src/Screens/people';
 
 if (!global.btoa) {  global.btoa = encode }
 
@@ -133,6 +134,20 @@ const appContainer = createAppContainer(
       screen: ChatScreenComponent,
       navigationOptions: {
         headerTitleAlign: 'left',
+        headerStyle: {
+          borderBottomLeftRadius: 30,
+          borderBottomRightRadius: 30
+        },
+        headerTitleStyle: {
+          fontFamily: 'Poppins-Medium',
+          fontSize: 18
+        }
+      }
+    },
+    People : {
+      screen:PeopleComponent,
+      navigationOptions: {
+        headerTitleAlign: 'center',
         headerStyle: {
           borderBottomLeftRadius: 30,
           borderBottomRightRadius: 30
