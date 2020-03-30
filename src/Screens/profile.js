@@ -6,7 +6,8 @@ import * as colors from '../utils/colors';
 import ImagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import MapView, { Marker } from 'react-native-maps'
+import MapView, { Marker, Callout } from 'react-native-maps'
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // create a component
 class ProfileComponent extends Component {
@@ -64,7 +65,7 @@ class ProfileComponent extends Component {
 
     renderMapUi = () => {
         return (
-            <View style={{ flex: 1, margin: 20, overflow: 'hidden', borderRadius: 20 }}>
+            <View style={{ flex: 1, margin: 20, overflow: 'hidden', borderRadius: 20, borderColor: 'black', borderEndWidth: 8, borderStartWidth: 8, borderTopWidth: 2, borderBottomWidth: 2 }}>
                 <MapView
                     ref={MapView => (this.MapView = MapView)}
                     initialRegion={{
@@ -95,9 +96,11 @@ class ProfileComponent extends Component {
                         anchor={{ x: 0.5, y: 0.8 }}
                         identifier='1'
                     >
-                        {/* <View>
-                                    <Image style={{ width: 40, height: 40 }} source={require('../../assets/images/marker.png')} />
-                                </View> */}
+                        <Callout > 
+                            <View>
+                                <Text style={{fontFamily:'Poppins-Bold'}}>You are here</Text>
+                            </View>
+                        </Callout>
                     </Marker>
                 </MapView>
             </View>
@@ -106,24 +109,30 @@ class ProfileComponent extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <ImageBackground source={this.state.imgUri == undefined ? require('../../assets/images/monkey_bg.jpg') : { uri: this.state.imgUri }} style={styles.upperCurvedShape} imageStyle={{
-                    borderBottomLeftRadius: 60,
-                    borderBottomRightRadius: 60,
-                }}>
-                    <TouchableOpacity style={styles.btnCameraStyle} onPress={() => this.imgEditClick()}>
-                        <Icon name='camera' color='white' size={16} />
-                    </TouchableOpacity>
-                </ImageBackground>
-                <View style={{ height: 15, marginTop: 10, marginBottom: 10, backgroundColor: 'black', marginRight: 60, marginLeft: 60, borderRadius: 20 }} />
-                <View style={styles.bottomCurvedShape}>
-                    <Text style={{ fontFamily: 'Poppins-Bold', marginStart: 30, marginTop: 20, fontSize: 18, includeFontPadding: false }}>Govind Prajapati</Text>
-                    {this.renderBioUi()}
-                    <Text style={{ fontFamily: 'Poppins-Bold', includeFontPadding: false, marginStart: 30, marginTop: 20, fontSize: 14 }}>Email Id</Text>
-                    <Text style={{ fontFamily: 'Poppins-Medium', includeFontPadding: false, marginStart: 30, fontSize: 16 }}>govind@gmail.com</Text>
-                    {this.renderMapUi()}
+            <SafeAreaView style={{ flex: 1 }}>
+                <View style={styles.container}>
+                    <ImageBackground source={this.state.imgUri == undefined ? require('../../assets/images/monkey_bg.jpg') : { uri: this.state.imgUri }} style={styles.upperCurvedShape} imageStyle={{
+                        borderBottomLeftRadius: 60,
+                        borderBottomRightRadius: 60,
+                    }}>
+                        <TouchableOpacity style={[styles.btnCameraStyle, { alignSelf: 'flex-start', paddingEnd: 4 }]} onPress={() => this.props.navigation.goBack(null)}>
+                            <Icon name='chevron-left' color='white' size={14} />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.btnCameraStyle} onPress={() => this.imgEditClick()}>
+                            <Icon name='camera' color='white' size={14} />
+                        </TouchableOpacity>
+                    </ImageBackground>
+                    <View style={{ height: 15, marginTop: 10, marginBottom: 10, backgroundColor: 'black', marginRight: 60, marginLeft: 60, borderRadius: 20 }} />
+                    <View style={styles.bottomCurvedShape}>
+                        <Text style={{ fontFamily: 'Poppins-Bold', marginStart: 30, marginTop: 20, fontSize: 18, includeFontPadding: false }}>Govind Prajapati</Text>
+                        {this.renderBioUi()}
+                        <Text style={{ fontFamily: 'Poppins-Bold', includeFontPadding: false, marginStart: 30, marginTop: 20, fontSize: 14 }}>Email Id</Text>
+                        <Text style={{ fontFamily: 'Poppins-Medium', includeFontPadding: false, marginStart: 30, fontSize: 16 }}>govind@gmail.com</Text>
+                        {this.renderMapUi()}
+                    </View>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }
@@ -137,6 +146,8 @@ const styles = StyleSheet.create({
     },
     upperCurvedShape: {
         flex: 0.45,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         backgroundColor: 'white',
         shadowColor: "#000",
         shadowOffset: {
@@ -164,20 +175,10 @@ const styles = StyleSheet.create({
         elevation: 7,
     },
     btnCameraStyle: {
-        height: 40,
-        width: 40,
+        height: 35,
+        width: 35,
         alignSelf: 'flex-end',
         margin: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: colors.red,
-        borderRadius: 30,
-    },
-    btnEditStyle: {
-        height: 40,
-        width: 40,
-        alignSelf: 'flex-end',
-        margin: 20,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: colors.red,
