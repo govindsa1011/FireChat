@@ -29,7 +29,7 @@ class PeopleItem extends Component {
                         resizeMode={'contain'} />
                     <View style={{ flex: 1 }}>
                         <Text style={{ flex: 1, fontFamily: 'Poppins-Medium', fontSize: 18, color: 'black', marginStart: 16, marginTop: 10, marginEnd: 16 }}>{this.props.item.name}</Text>
-                        <Text style={{ flex: 1, fontFamily: 'Poppins-Regular', marginStart: 16, color: colors.hintColor, marginBottom: 10, marginEnd: 16 }}>{this.props.item.email}</Text>
+                        <Text style={{ flex: 1, fontFamily: 'Poppins-Regular', marginStart: 16, color: colors.hintColor, marginBottom: 10, marginEnd: 16 }}>{this.props.item.status}</Text>
                     </View>
                 </View>
             </TouchableWithoutFeedback>

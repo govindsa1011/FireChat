@@ -54,7 +54,7 @@ class PeopleComponent extends Component {
         this.ref.get().then((docs) => {
             const peopleList = []
             docs.forEach((doc) => {
-                const { id, name, email } = doc.data();
+                const { id, name, email ,status} = doc.data();
                 this.getUserDetails().then((userData) => {
                     var userId = userData.userId;
                     if (id !== userId) {
@@ -64,6 +64,7 @@ class PeopleComponent extends Component {
                             id,
                             name,
                             email,
+                            status
                         });
                     }
                     this.setState({

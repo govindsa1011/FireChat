@@ -97,6 +97,7 @@ class SignUpComponent extends React.Component {
                         id: result.user.uid,
                         name: this.state.strName,
                         email: this.state.strEmail,
+                        status:'Hey! There I am using Monkey chat.',
                         password: this.state.strPassword,
                         recent_chats:[]
                     })

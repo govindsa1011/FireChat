@@ -137,7 +137,8 @@ class PlusButton extends Component {
                 }}>
                     <TouchableOpacity
                         onPress={() => {
-
+                            this.toggleView()
+                            this.props.navigate.navigate('Profile')
                         }}
                         style={{
                             alignItems: 'center',

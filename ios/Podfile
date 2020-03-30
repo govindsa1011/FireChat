@@ -38,6 +38,10 @@ target 'FireChat' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
   target 'FireChatTests' do
     inherit! :search_paths
     # Pods for testing

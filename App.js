@@ -13,12 +13,13 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { PlusButton } from './src/Components/PlusButton';
 import * as colors from './src/utils/colors';
 import ChatScreenComponent from './src/Screens/chatscreen';
-import {decode, encode} from 'base-64';
+import { decode, encode } from 'base-64';
 import PeopleComponent from './src/Screens/people';
+import ProfileComponent from './src/Screens/profile';
 
-if (!global.btoa) {  global.btoa = encode }
+if (!global.btoa) { global.btoa = encode }
 
-if (!global.atob) { global.atob = decode } 
+if (!global.atob) { global.atob = decode }
 
 console.disableYellowBox = true;
 const DEVICE_WIDTH = Dimensions.get('window').width;
@@ -75,8 +76,8 @@ const bottomTabNavigator = createBottomTabNavigator({
   // Our plus button
   Plus: {
     screen: () => null, // Empty screen
-    navigationOptions: ({navigation}) => ({
-      tabBarIcon: <PlusButton navigate={navigation}/> // Plus button component
+    navigationOptions: ({ navigation }) => ({
+      tabBarIcon: <PlusButton navigate={navigation} /> // Plus button component
     })
   },
   Map: {
@@ -130,7 +131,7 @@ const appContainer = createAppContainer(
         headerShown: false
       }
     },
-    ChatScreen : {
+    ChatScreen: {
       screen: ChatScreenComponent,
       navigationOptions: {
         headerTitleAlign: 'left',
@@ -144,8 +145,8 @@ const appContainer = createAppContainer(
         }
       }
     },
-    People : {
-      screen:PeopleComponent,
+    People: {
+      screen: PeopleComponent,
       navigationOptions: {
         headerTitleAlign: 'center',
         headerStyle: {
@@ -157,7 +158,8 @@ const appContainer = createAppContainer(
           fontSize: 18
         }
       }
-    }
+    },
+    Profile: {screen: ProfileComponent}
   }),
 )
 
